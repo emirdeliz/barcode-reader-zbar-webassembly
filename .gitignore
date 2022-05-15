@@ -33,3 +33,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# webassembly
+lib/webassembly/src/barcode/zbar-*
+lib/webassembly/**/dist/*
+lib/webassembly/**/*.dSYM
+lib/webassembly/**/*.test
