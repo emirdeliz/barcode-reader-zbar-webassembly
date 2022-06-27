@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "cc_barcode_utils.h"
+#include "c_barcode_utils.h"
 
 int barcode_length = 44;
 
@@ -12,7 +12,7 @@ int barcode_length = 44;
 void run(char barcode[], int mod)
 {
 	char result_mod[49] = {};
-	cc_apply_maybe_check_digit_to_barcode(barcode, result_mod, barcode_length);
+	c_apply_maybe_check_digit_to_barcode(barcode, result_mod, barcode_length);
 	printf("Mod %d: '%s'\n\n", mod, result_mod);
 }
 

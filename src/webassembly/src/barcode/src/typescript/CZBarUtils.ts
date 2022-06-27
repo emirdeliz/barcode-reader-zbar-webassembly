@@ -2,7 +2,7 @@ import {
   checkIsNodeEnvironment,
   checkIsTestEnvironment,
 } from 'helpers/global/GlobalHelper';
-import { getCCZBarInstance } from './CCZBarWasm';
+import { getCZBarInstance } from './CZBarWasm';
 
 /**
  * This method validate the if the zbar is running on the environment test and as node.
@@ -10,7 +10,7 @@ import { getCCZBarInstance } from './CCZBarWasm';
  * About the limitation: ENOENT: no such file or directory, open 'zbar.wasm'
  * @returns boolean - True if the zbar is running on the environment test and as node.
  */
-export const checkIfCCZBarIsRunningOnEnvironmentTestOrAsNode = () => {
+export const checkIfCZBarIsRunningOnEnvironmentTestOrAsNode = () => {
   return checkIsTestEnvironment() || checkIsNodeEnvironment();
 };
 
@@ -114,7 +114,7 @@ export const lengthBytesUTF8 = (str: string) => {
  * @returns {number} - The pointer to memory of the allocate.
  */
 export const allocateUTF8 = async (str: string) => {
-  const wasm = await getCCZBarInstance();
+  const wasm = await getCZBarInstance();
   const size = lengthBytesUTF8(str) + 1;
   const ret = wasm.malloc(size);
   if (ret) {

@@ -1,17 +1,17 @@
 /**
  * IMPORTANT: The methods in this file are only used to make the webassembly tests.
  */
-import { allocateUTF8 } from './CCZBarUtils';
-import { getCCZBarInstance } from './CCZBarWasm';
+import { allocateUTF8 } from './CZBarUtils';
+import { getCZBarInstance } from './CZBarWasm';
 
 /**
  * This method to check if barcode is from insurance.
  * @param {string} barcode - The barcode to check.
  * @returns boolean - True if barcode is from insurance.
  */
-export const ccZbarCheckIfBarcodeIsFromInsurance = async (barcode: string) => {
-  const wasm = await getCCZBarInstance();
-  const response = await wasm.ccCheckIfBarcodeIsFromInsurance(barcode);
+export const cZbarCheckIfBarcodeIsFromInsurance = async (barcode: string) => {
+  const wasm = await getCZBarInstance();
+  const response = await wasm.cCheckIfBarcodeIsFromInsurance(barcode);
   const isFromInsurance = response === 0;
   return isFromInsurance;
 };
@@ -21,9 +21,9 @@ export const ccZbarCheckIfBarcodeIsFromInsurance = async (barcode: string) => {
  * @param {string} barcode - The barcode to get mod.
  * @returns number - The barcode mod.
  */
-export const ccGetMod = async (barcode: string) => {
-  const wasm = await getCCZBarInstance();
-  const response = await wasm.ccGetMod(parseInt(barcode[2], 10));
+export const cGetMod = async (barcode: string) => {
+  const wasm = await getCZBarInstance();
+  const response = await wasm.cGetMod(parseInt(barcode[2], 10));
   return response;
 };
 
@@ -32,10 +32,10 @@ export const ccGetMod = async (barcode: string) => {
  * @param {string} segment - The barcode segment (string with 11 digits).
  * @returns string - The check digits for the segment.
  */
- export const ccCalcCheckDigit = async (segment: string, mod: number) => {
-  const wasm = await getCCZBarInstance();
+ export const cCalcCheckDigit = async (segment: string, mod: number) => {
+  const wasm = await getCZBarInstance();
   const segmentPointer = await allocateUTF8(segment);
-  const response = await wasm.ccCalcCheckDigit(segmentPointer, mod);
+  const response = await wasm.cCalcCheckDigit(segmentPointer, mod);
   await wasm.free(segmentPointer);
   return response;
 };

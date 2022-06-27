@@ -7,20 +7,20 @@ import {
   emscriptenResizeHeap,
   fdWrite,
   updateGlobalBufferAndViews,
-} from './CCZBarEmscripten';
-import { checkIfCCZBarIsRunningOnEnvironmentTestOrAsNode } from './CCZBarUtils';
+} from './CZBarEmscripten';
+import { checkIfCZBarIsRunningOnEnvironmentTestOrAsNode } from './CZBarUtils';
 
-export const CCZBAR_WASM_BINARY_FILE = 'ccbarcode.wasm';
-let ccBarcodeInstance = {} as CCZBarBarcodeWasm;
+export const CZBAR_WASM_BINARY_FILE = 'cbarcode.wasm';
+let cBarcodeInstance = {} as CZBarBarcodeWasm;
 
-export interface CCWasm {
-  ccCalcCheckDigit: (segmentPtr: number, mod: number) => Promise<string>;
-  ccGetMod: (barcode: number) => Promise<number>;
-  ccCheckIfBarcodeIsFromInsurance: (barcode: string) => Promise<number>;
+export interface CWasm {
+  cCalcCheckDigit: (segmentPtr: number, mod: number) => Promise<string>;
+  cGetMod: (barcode: number) => Promise<number>;
+  cCheckIfBarcodeIsFromInsurance: (barcode: string) => Promise<number>;
 }
 
-export interface CCZBarWasm {
-  ccZBarImageCreate: (
+export interface CZBarWasm {
+  cZBarImageCreate: (
     width: number,
     height: number,
     hex: number,
@@ -28,7 +28,7 @@ export interface CCZBarWasm {
     len: number,
     sequenceNum: number
   ) => number;
-  ccZBarImageScannerScanAndMaybeApplyCheckDigit: (
+  cZBarImageScannerScanAndMaybeApplyCheckDigit: (
     ptr: number,
     byteOffset: number,
     ignorePix: number
@@ -38,7 +38,7 @@ export interface CCZBarWasm {
 /**
  * This interface represente the wasm module to the webassembly.
  */
-export interface CCZBarBarcodeWasm extends CCZBarWasm, CCWasm {
+export interface CZBarBarcodeWasm extends CZBarWasm, CWasm {
   malloc: (size: number) => number;
   free: (pointer: number) => Promise<void>;
   memory: WebAssembly.Memory;
@@ -57,10 +57,10 @@ export interface CCZBarBarcodeWasm extends CCZBarWasm, CCWasm {
 }
 
 /**
- * This method will fetch the ccwasm module.
+ * This method will fetch the cwasm module.
  * @returns {Promise<WebAssembly.WebAssemblyInstantiatedSource>} - The wasm module.
  */
-const fetchCCZBarWasm = async () => {
+const fetchCZBarWasm = async () => {
   const asmLibraryArg = {
     f: clockGetTime,
     c: emscriptenMemcpyBig,
@@ -71,49 +71,49 @@ const fetchCCZBarWasm = async () => {
   };
 
   const info = { a: asmLibraryArg };
-  if (checkIfCCZBarIsRunningOnEnvironmentTestOrAsNode()) {
+  if (checkIfCZBarIsRunningOnEnvironmentTestOrAsNode()) {
     const wasmFileLocalDir = path.resolve(
       __dirname,
       '../../../../../../public',
-      CCZBAR_WASM_BINARY_FILE
+      CZBAR_WASM_BINARY_FILE
     );
     const data = fs.readFileSync(wasmFileLocalDir);
     return WebAssembly.instantiate(data, info);
   }
 
-  const response = await fetch(CCZBAR_WASM_BINARY_FILE);
+  const response = await fetch(CZBAR_WASM_BINARY_FILE);
   const bytes = await response.arrayBuffer();
   return WebAssembly.instantiate(bytes, info);
 };
 
 /**
  * This method make a bridge between the webassembly and the c code.
- * @returns {CCZBarBarcodeWasm} - The webassembly instance.
+ * @returns {CZBarBarcodeWasm} - The webassembly instance.
  */
-const prepareCCZBarWasm = async () => {
-  const ex = await fetchCCZBarWasm();
+const prepareCZBarWasm = async () => {
+  const ex = await fetchCZBarWasm();
   const asm = ex.instance.exports;
-  ccBarcodeInstance = {
-    ccZBarImageCreate: asm.m,
-    ccZBarImageScannerScanAndMaybeApplyCheckDigit: asm.n,
-    ccCheckIfBarcodeIsFromInsurance: asm.l,
-    ccGetMod: asm.k,
-    ccCalcCheckDigit: asm.j,
+  cBarcodeInstance = {
+    cZBarImageCreate: asm.m,
+    cZBarImageScannerScanAndMaybeApplyCheckDigit: asm.n,
+    cCheckIfBarcodeIsFromInsurance: asm.l,
+    cGetMod: asm.k,
+    cCalcCheckDigit: asm.j,
     malloc: asm.i,
     free: asm.q,
     memory: asm.g,
-  } as CCZBarBarcodeWasm;
-  updateGlobalBufferAndViews(ccBarcodeInstance.memory.buffer);
-  return ccBarcodeInstance;
+  } as CZBarBarcodeWasm;
+  updateGlobalBufferAndViews(cBarcodeInstance.memory.buffer);
+  return cBarcodeInstance;
 };
 
 /**
  * This method will return and create the webassembly instance.
- * @returns {CCZBarBarcodeWasm} - The webassembly instance.
+ * @returns {CZBarBarcodeWasm} - The webassembly instance.
  */
-export const getCCZBarInstance = async () => {
-  if (!ccBarcodeInstance.free) {
-    ccBarcodeInstance = await prepareCCZBarWasm();
+export const getCZBarInstance = async () => {
+  if (!cBarcodeInstance.free) {
+    cBarcodeInstance = await prepareCZBarWasm();
   }
-  return ccBarcodeInstance;
+  return cBarcodeInstance;
 };

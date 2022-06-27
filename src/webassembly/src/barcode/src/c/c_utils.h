@@ -16,7 +16,7 @@
  * @param int string_length - The length of the number.
  * @returns char* - The char[] result.
  */
-char *cc_int_to_string(int number, int string_length)
+char *c_int_to_string(int number, int string_length)
 {
 	char * target = (char *)malloc(sizeof(char) * (string_length + 1));
 	sprintf(target, "%d", number);
@@ -28,10 +28,10 @@ char *cc_int_to_string(int number, int string_length)
  * @param int number - The number to convert.
  * @returns char* - The char[] result.
  */
-char *cc_int_to_string_11(int number)
+char *c_int_to_string_11(int number)
 {
 	int string_length = 11;
-	return cc_int_to_string(number, string_length);
+	return c_int_to_string(number, string_length);
 }
 
 /**
@@ -39,7 +39,7 @@ char *cc_int_to_string_11(int number)
  * @param char_array - The char[] to convert.
  * @returns int* - The int* result.
  */
-int * cc_char_array_to_int_array(char char_array[])
+int * c_char_array_to_int_array(char char_array[])
 {
 	int length = strlen(char_array);
 	int * result = (int *)malloc(length * sizeof(int));
@@ -57,7 +57,7 @@ int * cc_char_array_to_int_array(char char_array[])
  * @param int end - The end index.
  * @param char[] target - The target(char[]) to receive the result.
  */
-void cc_substring(char *source, int start, int end, char target[])
+void c_substring(char *source, int start, int end, char target[])
 {
 	memset(target, '\0', strlen(target));
 	strncpy(target, source + start, end);
@@ -69,7 +69,7 @@ void cc_substring(char *source, int start, int end, char target[])
  * @param int num_cols - The cols number on matrix.
  * @returns char** - The char matrix(char[][]).
  */
-char **cc_allocate_char_matrix(int num_rows, int num_cols)
+char **c_allocate_char_matrix(int num_rows, int num_cols)
 {
 	char **matrix = (char **)malloc(num_rows * sizeof(char *));
 
@@ -91,10 +91,10 @@ char **cc_allocate_char_matrix(int num_rows, int num_cols)
  * @param int segment_length - The length of the segment.
  * @returns char** - The matrix(char[][]) result.
  */
-char **cc_split_string_by_segment_length(char *array_char, int str_length, int segment_length)
+char **c_split_string_by_segment_length(char *array_char, int str_length, int segment_length)
 {
 	int segments_length = str_length / segment_length;
-	char **segments = cc_allocate_char_matrix(segments_length, segment_length);
+	char **segments = c_allocate_char_matrix(segments_length, segment_length);
 
 	for (int i = 0; i < segments_length - 1; i += 1)
 	{
@@ -102,7 +102,7 @@ char **cc_split_string_by_segment_length(char *array_char, int str_length, int s
 		int end_index = 11;
 		
 		char segment[11];
-		cc_substring(array_char, start_index, end_index, segment);
+		c_substring(array_char, start_index, end_index, segment);
 
 		for (int j = 0; j < segment_length; j += 1)
 		{
@@ -117,7 +117,7 @@ char **cc_split_string_by_segment_length(char *array_char, int str_length, int s
  * @param int number - The value to be counted
  * @returns int - The numbers of digits.
  */
-int cc_count_num_digits_int(int number)
+int c_count_num_digits_int(int number)
 {
 	int result = 0;
 	while (number != 0)

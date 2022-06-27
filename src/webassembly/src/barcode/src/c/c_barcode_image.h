@@ -10,7 +10,7 @@
  * @param uint32_t sequence_num - The sequence number of the image (always 0).
  * @returns zbar_image_t* - ZBarImage pointer.
  */
-EXPORT zbar_image_t *cc_zbar_image_create(uint32_t width,
+EXPORT zbar_image_t *_zbar_image_create(uint32_t width,
 																					uint32_t height,
 																					uint32_t format,
 																					void *data,

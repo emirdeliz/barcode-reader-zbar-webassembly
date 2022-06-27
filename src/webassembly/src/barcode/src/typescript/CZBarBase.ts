@@ -1,18 +1,18 @@
 /**
- * The class CCZBarBase has the base methods of zbar to comunicate with the webassembly.  
+ * The class CZBarBase has the base methods of zbar to comunicate with the webassembly.  
  */
-import { CCZBarBarcodeWasm } from './CCZBarWasm';
+import { CZBarBarcodeWasm } from './CZBarWasm';
 
-export class CCZBarBase {
+export class CZBarBase {
   protected ptr: number;
-  protected inst: CCZBarBarcodeWasm;
+  protected inst: CZBarBarcodeWasm;
 
   /**
-   * The constructor of the class CCZBarBase.
+   * The constructor of the class CZBarBase.
    * @param {number} ptr - The memory pointer of this class on webassembly.
-   * @param {CCZBarBarcodeWasm} inst - The instance of the wasm to comunicate with webassembly.
+   * @param {CZBarBarcodeWasm} inst - The instance of the wasm to comunicate with webassembly.
    */
-  protected constructor(ptr: number, inst: CCZBarBarcodeWasm) {
+  protected constructor(ptr: number, inst: CZBarBarcodeWasm) {
     this.ptr = ptr;
     this.inst = inst;
   }

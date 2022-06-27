@@ -1,8 +1,8 @@
 import { createCanvas } from 'canvas';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
 import { checkIsNodeEnvironment } from 'framework/helpers/global/GlobalHelper';
-import { CCZBarImage } from './CCZBarImage';
-import { getCCZBarInstance } from './CCZBarWasm';
+import { CZBarImage } from './CZBarImage';
+import { getCZBarInstance } from './CZBarWasm';
 import { getNumbersOfString } from 'framework/helpers';
 
 if (!checkIsNodeEnvironment()) {
@@ -27,7 +27,7 @@ const SCALE_LIMIT = 5;
  * @param {string} src - The url or file related to pdf file.
  * @returns {Promise<PDFDocumentProxy>} - The pdf document as pdfjs proxy.
  */
-const getCCZBarBarcodePdf = async (src: string | File) => {
+const getCZBarBarcodePdf = async (src: string | File) => {
   const isSrcString = typeof src === 'string';
   const pdfData = await new Promise<string | Uint8Array>((resolve) => {
     if (isSrcString) {
@@ -53,7 +53,7 @@ const getCCZBarBarcodePdf = async (src: string | File) => {
  * @param {number} page - The page number to find the barcode.
  * @returns {Promise<ImageData>} - The image data related to the page of pdf document.
  */
-const getCCZBarImageData = async (
+const getCZBarImageData = async (
   pdf: PDFJS.PDFDocumentProxy,
   scale: number,
   page: number = 1
@@ -88,23 +88,23 @@ const scanBarcode = async (
   scale: number,
   page: number = 0
 ) => {
-  const imageData = await getCCZBarImageData(pdf, scale, page + 1);
+  const imageData = await getCZBarImageData(pdf, scale, page + 1);
   if (!imageData) {
     return '';
   }
-  const image = await CCZBarImage.createFromGrayBuffer(
+  const image = await CZBarImage.createFromGrayBuffer(
     imageData.width,
     imageData.height,
     imageData.data.buffer,
     sequenceNum
   );
 
-  const ccBarInstance = await getCCZBarInstance();
+  const cBarInstance = await getCZBarInstance();
   const barcodeLength = 48;
-  const result = new Uint8Array(ccBarInstance.memory.buffer, 0, barcodeLength);
+  const result = new Uint8Array(cBarInstance.memory.buffer, 0, barcodeLength);
 
   const ignorePix = 0;
-  await ccBarInstance.ccZBarImageScannerScanAndMaybeApplyCheckDigit(
+  await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
     image.getPointer(),
     result.byteOffset,
     ignorePix
@@ -145,7 +145,7 @@ export const scanBarcodeAndIgnorePix = async (
     return '';
   }
 
-  const pdf = await getCCZBarBarcodePdf(src);
+  const pdf = await getCZBarBarcodePdf(src);
   const barcode = await scanBarcode(pdf, sequenceNum, scale);
 
   if (!barcode) {

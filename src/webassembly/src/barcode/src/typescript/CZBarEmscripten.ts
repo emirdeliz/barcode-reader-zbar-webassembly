@@ -2,7 +2,7 @@
  * All method of this file was used internally by emscripten. Avoid to edit them.
  */
 import { checkIsNodeEnvironment } from "framework/helpers";
-import { getCCZBarInstance } from "./CCZBarWasm";
+import { getCZBarInstance } from "./CZBarWasm";
 
 /**
  * This method get the clock time in milliseconds. Used internally by emscripten.
@@ -11,7 +11,7 @@ import { getCCZBarInstance } from "./CCZBarWasm";
  * @returns {number} - Always 0;
  */
 export const clockGetTime = async (clkId: number, tp: number) => {
-  const { HEAP32 } = await getCCZBarInstance();
+  const { HEAP32 } = await getCZBarInstance();
   let now;
   let emscriptenGetNow;
   if (checkIsNodeEnvironment()) {
@@ -44,7 +44,7 @@ export const clockGetTime = async (clkId: number, tp: number) => {
  * @returns {number} Always 0.
  */
 export const fdWrite = async (_fd: number, iov: number, iovcnt: number, pnum: number) => {
-  const { HEAP32 } = await getCCZBarInstance();
+  const { HEAP32 } = await getCZBarInstance();
   let num = 0;
   for (let i = 0; i < iovcnt; i++) {
     var len = HEAP32[(iov + 4) >> 2];
@@ -62,7 +62,7 @@ export const fdWrite = async (_fd: number, iov: number, iovcnt: number, pnum: nu
  */
 const emscriptenReallocBuffer = async (size: number) => {
   try {
-    const { buffer, memory } = await getCCZBarInstance();
+    const { buffer, memory } = await getCZBarInstance();
     memory.grow((size - buffer.byteLength + 65535) >>> 16);
     updateGlobalBufferAndViews(memory.buffer);
     return 1;
@@ -87,20 +87,20 @@ const alignUp = (x: number, multiple: number) => {
  * @param {number} dest - The destination.
  * @param {number} src - The source.
  * @param {number} num - The number of bytes to copy.
- * @returns {boolean} - True if the copy was successful.
+ * @returns {boolean} - True if the copy was sucessful.
  */
 export const emscriptenMemcpyBig = async (dest: number, src: number, num: number) => {
-  const { HEAPU8 } = await getCCZBarInstance();
+  const { HEAPU8 } = await getCZBarInstance();
   HEAPU8.copyWithin(dest, src, src + num);
 };
 
 /**
  * This method resize the head memory used in the webassembly. Used internally by emscripten.
  * @param {number} requestedSize - The requested size.
- * @returns {boolean} - True if the resize was successful.
+ * @returns {boolean} - True if the resize was sucessful.
  */
 export const emscriptenResizeHeap = async (requestedSize: number) => {
-  const oldSize = (await getCCZBarInstance()).HEAPU8.length;
+  const oldSize = (await getCZBarInstance()).HEAPU8.length;
   requestedSize = requestedSize >>> 0;
 
   const maxHeapSize = 2147483648;
@@ -129,14 +129,14 @@ export const emscriptenResizeHeap = async (requestedSize: number) => {
  * @void
  */
 export const updateGlobalBufferAndViews = async (buffer: ArrayBuffer) => {
-	const ccBarcodeInstance = await getCCZBarInstance();
-  ccBarcodeInstance['buffer'] = buffer;
-  ccBarcodeInstance['HEAP8'] = new Int8Array(buffer);
-  ccBarcodeInstance['HEAP16'] = new Int16Array(buffer);
-  ccBarcodeInstance['HEAP32'] = new Int32Array(buffer);
-  ccBarcodeInstance['HEAPU8'] = new Uint8Array(buffer);
-  ccBarcodeInstance['HEAPU16'] = new Uint16Array(buffer);
-  ccBarcodeInstance['HEAPU32'] = new Uint32Array(buffer);
-  ccBarcodeInstance['HEAPF32'] = new Float32Array(buffer);
-  ccBarcodeInstance['HEAPF64'] = new Float64Array(buffer);
+	const cBarcodeInstance = await getCZBarInstance();
+  cBarcodeInstance['buffer'] = buffer;
+  cBarcodeInstance['HEAP8'] = new Int8Array(buffer);
+  cBarcodeInstance['HEAP16'] = new Int16Array(buffer);
+  cBarcodeInstance['HEAP32'] = new Int32Array(buffer);
+  cBarcodeInstance['HEAPU8'] = new Uint8Array(buffer);
+  cBarcodeInstance['HEAPU16'] = new Uint16Array(buffer);
+  cBarcodeInstance['HEAPU32'] = new Uint32Array(buffer);
+  cBarcodeInstance['HEAPF32'] = new Float32Array(buffer);
+  cBarcodeInstance['HEAPF64'] = new Float64Array(buffer);
 };
