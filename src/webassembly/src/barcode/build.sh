@@ -7,7 +7,7 @@ if [[ "$DOCKER_VERSION" == *"Docker version"* ]]; then
 	echo "\nData from the last build has been removed 🧹"
 	echo "If you are compiling for the first time the compilation will take about ⏳ 10min otherwise ⏳ 1min"
 	echo "Enjoy and take relax 🍺 🍸 🍷...\n"
-	mkdir dist && make dist/ccbarcode.wasm && rm -rf zbar-0.23.90.tar.gz
+	mkdir dist && make dist/barcode.wasm && rm -rf zbar-0.23.90.tar.gz
 	echo "\nFinished build 😉 check the compile output 👆\nIf you see any errors, fix them and try again."
 	echo "If success the files were copied to the folders lib/barcode and the public on concodonta-web root as well 😌"
 	echo "Run the web project to test. The webassembly is on fire 🔥🔥🔥 "

@@ -13,17 +13,17 @@ ZBAR_INC = -I $(ZBAR_SOURCE)/include/ -I $(ZBAR_SOURCE)/
 EMCC_FLAGS = -Os -Wall -Werror --no-entry -s ALLOW_MEMORY_GROWTH=1 \
 	-s EXPORTED_FUNCTIONS="['_malloc','_free']" \
 	-s ERROR_ON_UNDEFINED_SYMBOLS=0 -s WASM=1 \
-	-s EXPORT_NAME="cczbar"
+	-s EXPORT_NAME="czbar"
 	-s MINIMAL_RUNTIME=1 
-CCZBAR_WASM_DEPS = dist/ccbarcode.wasm
-CCZBAR_BUILD_OUTPUT = ../../lib/barcode
+CZBAR_WASM_DEPS = dist/cbarcode.wasm
+CZBAR_BUILD_OUTPUT = ../../lib/barcode
 
-all:$(CCZBAR_WASM_DEPS)
+all:$(CZBAR_WASM_DEPS)
 
-dist/ccbarcode.wasm: 
-	$(EMCC) $(EMCC_FLAGS) -o dist/ccbarcode.js src/c/cc_barcode_scanner.c $(ZBAR_INC) $(ZBAR_OBJS)
-	cp dist/ccbarcode.wasm $(CCZBAR_BUILD_OUTPUT)
-	cp dist/ccbarcode.wasm ../../../../public/ccbarcode.wasm
+dist/cbarcode.wasm: 
+	$(EMCC) $(EMCC_FLAGS) -o dist/cbarcode.js src/c/c_barcode_scanner.c $(ZBAR_INC) $(ZBAR_OBJS)
+	cp dist/cbarcode.wasm $(CZBAR_BUILD_OUTPUT)
+	cp dist/cbarcode.wasm ../../../../public/cbarcode.wasm
 
 $(ZBAR_DEPS): $(ZBAR_SOURCE)/Makefile
 	cd $(ZBAR_SOURCE) && $(EMMAKE) make CFLAGS=-Os CXXFLAGS=-Os \ DEFS="-DZNO_MESSAGES -DHAVE_CONFIG_H"
