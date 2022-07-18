@@ -1,1 +1,0 @@
-export * from './barcode/src/typescript/index';

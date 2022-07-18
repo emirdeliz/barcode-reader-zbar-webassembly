@@ -1,7 +1,7 @@
 /**
  * All method of this file was used internally by emscripten. Avoid to edit them.
  */
-import { checkIsNodeEnvironment } from "framework/helpers";
+import { checkIsNodeEnvironment } from "helpers";
 import { getCZBarInstance } from "./CZBarWasm";
 
 /**

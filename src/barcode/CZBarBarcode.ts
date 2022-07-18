@@ -11,7 +11,7 @@ import { getCZBarInstance } from './CZBarWasm';
  */
 export const cZbarCheckIfBarcodeIsFromInsurance = async (barcode: string) => {
   const wasm = await getCZBarInstance();
-  const response = await wasm.cCheckIfBarcodeIsFromInsurance(barcode);
+  const response = await wasm.checkIfBarcodeIsFromInsurance(barcode);
   const isFromInsurance = response === 0;
   return isFromInsurance;
 };
@@ -32,10 +32,10 @@ export const cGetMod = async (barcode: string) => {
  * @param {string} segment - The barcode segment (string with 11 digits).
  * @returns string - The check digits for the segment.
  */
- export const cCalcCheckDigit = async (segment: string, mod: number) => {
+ export const calcheckDigit = async (segment: string, mod: number) => {
   const wasm = await getCZBarInstance();
   const segmentPointer = await allocateUTF8(segment);
-  const response = await wasm.cCalcCheckDigit(segmentPointer, mod);
+  const response = await wasm.calcheckDigit(segmentPointer, mod);
   await wasm.free(segmentPointer);
   return response;
 };

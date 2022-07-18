@@ -1,9 +1,8 @@
 import { createCanvas } from 'canvas';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
-import { checkIsNodeEnvironment } from 'framework/helpers/global/GlobalHelper';
+import { getNumbersOfString, checkIsNodeEnvironment } from 'helpers';
 import { CZBarImage } from './CZBarImage';
 import { getCZBarInstance } from './CZBarWasm';
-import { getNumbersOfString } from 'framework/helpers';
 
 if (!checkIsNodeEnvironment()) {
   PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.min.js`;

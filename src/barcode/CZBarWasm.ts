@@ -1,4 +1,3 @@
-import { GenericObject } from 'framework/types';
 import fs from 'fs';
 import path from 'path';
 import {
@@ -10,13 +9,13 @@ import {
 } from './CZBarEmscripten';
 import { checkIfCZBarIsRunningOnEnvironmentTestOrAsNode } from './CZBarUtils';
 
-export const CZBAR_WASM_BINARY_FILE = 'cbarcode.wasm';
+export const CZBAR_WASM_BINARY_FILE = '../../dist/cbarcode.wasm';
 let cBarcodeInstance = {} as CZBarBarcodeWasm;
 
 export interface CWasm {
-  cCalcCheckDigit: (segmentPtr: number, mod: number) => Promise<string>;
+  calcheckDigit: (segmentPtr: number, mod: number) => Promise<string>;
   cGetMod: (barcode: number) => Promise<number>;
-  cCheckIfBarcodeIsFromInsurance: (barcode: string) => Promise<number>;
+  checkIfBarcodeIsFromInsurance: (barcode: string) => Promise<number>;
 }
 
 export interface CZBarWasm {
@@ -44,7 +43,7 @@ export interface CZBarBarcodeWasm extends CZBarWasm, CWasm {
   memory: WebAssembly.Memory;
   print: () => void;
   printErr: () => void;
-  arguments: Array<GenericObject>;
+  arguments: Array<any>;
   buffer: ArrayBuffer;
   HEAP8: Int8Array;
   HEAP16: Int16Array;
@@ -96,9 +95,9 @@ const prepareCZBarWasm = async () => {
   cBarcodeInstance = {
     cZBarImageCreate: asm.m,
     cZBarImageScannerScanAndMaybeApplyCheckDigit: asm.n,
-    cCheckIfBarcodeIsFromInsurance: asm.l,
+    checkIfBarcodeIsFromInsurance: asm.l,
     cGetMod: asm.k,
-    cCalcCheckDigit: asm.j,
+    calcheckDigit: asm.j,
     malloc: asm.i,
     free: asm.q,
     memory: asm.g,

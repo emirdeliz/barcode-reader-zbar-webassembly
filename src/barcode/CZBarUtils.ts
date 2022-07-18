@@ -1,7 +1,7 @@
 import {
   checkIsNodeEnvironment,
   checkIsTestEnvironment,
-} from 'helpers/global/GlobalHelper';
+} from 'helpers';
 import { getCZBarInstance } from './CZBarWasm';
 
 /**
