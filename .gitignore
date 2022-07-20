@@ -1,5 +1,11 @@
 ### Node ###
 node_modules
 
-### Webassembly
+### Webassembly ###
 zbar
+
+### Dist ###
+dist
+
+### History ###
+.history

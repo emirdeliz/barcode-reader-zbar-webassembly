@@ -1,4 +1,4 @@
-import { scanBarcodeAndIgnorePix } from 'lib/webassembly/src';
+import { scanBarcodeAndIgnorePix } from 'barcode';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
 import { checkIsNodeEnvironment } from '../global/GlobalHelper';
 

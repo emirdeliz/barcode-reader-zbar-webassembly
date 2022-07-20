@@ -2,13 +2,18 @@
 	"name": "barcode-reader-zbar-webassembly",
 	"version": "1.0.0",
 	"description": "barcode-reader-zbar-webassembly",
-	"main": "index.js",
+	"main": "dist/barcode-reader.js",
+	"types": "dist/barcode-reader.d.ts",
+	"files": [
+		"dist"
+	],
 	"repository": "https://github.com/emirdeliz/barcode-reader-zbar-webassembly",
 	"author": "Emir Marques - <emirdeliz@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
 		"barcode-reader-zbar-c": "git+ssh://git@github.com/emirdeliz/barcode-reader-zbar-c.git",
 		"canvas": "^2.9.3",
+		"jsmin": "^1.0.1",
 		"pdfjs-dist": "^2.14.305"
 	},
 	"devDependencies": {
@@ -19,6 +24,9 @@
 		"typescript": "^4.7.4"
 	},
 	"scripts": {
-		"test": "jest"
+		"test": "jest",
+		"build": "tsc && yarn minify",
+		"build-webassembly": "sh build.sh",
+		"minify": "jsmin -o dist/barcode-reader.min.js dist/barcode-reader.js"
 	}
 }

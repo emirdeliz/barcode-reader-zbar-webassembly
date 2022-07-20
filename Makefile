@@ -18,14 +18,14 @@ EMCC_FLAGS = -Os -Wall -Werror --no-entry -s ALLOW_MEMORY_GROWTH=1 \
 	-s ERROR_ON_UNDEFINED_SYMBOLS=0 -s WASM=1 \
 	-s EXPORT_NAME="czbar"
 	-s MINIMAL_RUNTIME=1
-CZBAR_WASM_DEPS = bin/cbarcode.wasm
+CZBAR_WASM_DEPS = dist/cbarcode.wasm
 CZBAR_BUILD_OUTPUT = dist
 CZBAR_BARCODE_READER_ENTRY = node_modules/barcode-reader-zbar-c/src/c_barcode_scanner.c
 
 dist/all: $(ZBAR_DEPS) $(CZBAR_WASM_DEPS)
 
 $(CZBAR_WASM_DEPS):
-	$(EMCC) $(EMCC_FLAGS) -o bin/cbarcode.js $(CZBAR_BARCODE_READER_ENTRY) $(ZBAR_INC) $(ZBAR_OBJS)
+	$(EMCC) $(EMCC_FLAGS) -o dist/cbarcode.wasm $(CZBAR_BARCODE_READER_ENTRY) $(ZBAR_INC) $(ZBAR_OBJS)
 
 $(ZBAR_DEPS): $(ZBAR_SOURCE)/Makefile
 	cd $(ZBAR_SOURCE_PATH)/$(ZBAR_SOURCE) && $(EMMAKE) make CFLAGS=-Os CXXFLAGS=-Os DEFS="-DZNO_MESSAGES -DHAVE_CONFIG_H"

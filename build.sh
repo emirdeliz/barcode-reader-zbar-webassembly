@@ -7,11 +7,11 @@ if [[ "$DOCKER_VERSION" == *"Docker version"* ]]; then
 	echo "If you are compiling for the first time the compilation will take about ⏳ 10min otherwise ⏳ 1min"
 	echo "Enjoy and take relax 🍺 🍸 🍷...\n"
 
-	mkdir bin;
+	mkdir dist;
 	
 	if [ "$1" == "--compile" ]; then
 		echo "Building the webassembly code... 👀\n"
-		make bin/cbarcode.wasm
+		make dist/cbarcode.wasm
 	elif [ $# -gt 0 ]; then
 		echo "\n⚠️ ⚠️ ⚠️  Invalid argument: $1\n"
 		exit 1;

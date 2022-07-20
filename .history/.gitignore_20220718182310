@@ -1,9 +1,0 @@
-### Node ###
-node_modules
-
-
-### Webassembly
-src/webassembly/src/barcode/zbar-*
-src/webassembly/**/dist/*
-src/webassembly/**/*.dSYM
-src/webassembly/**/*.test

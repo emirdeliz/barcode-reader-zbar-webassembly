@@ -3,7 +3,7 @@ export const splitStringBySegmentLength = (
   skipCharacterIndex: number = 0,
   segmentLength: number
 ) => {
-  const chunks = [];
+  const chunks = [] as Array<string>;
   for (
     let i = 0, charsLength = source.length;
     i < charsLength;

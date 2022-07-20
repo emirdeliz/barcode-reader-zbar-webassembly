@@ -1,7 +1,7 @@
 /**
  * @jest-environment node
  */
-import { getBilletPathAndBarcodeNumber } from 'tests';
+import { getBilletPathAndBarcodeNumber } from '__mock__/helpers';
 import { splitStringBySegmentLength } from '../string/StringHelper';
 import { readBarcodeFromStack } from './BarcodeHelper';
 

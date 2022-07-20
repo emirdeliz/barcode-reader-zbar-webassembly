@@ -1,8 +1,14 @@
 {
   "extends": "@tsconfig/node16/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "module": "amd",
+    "target": "es5",
+    "outDir": "./dist",
+    "outFile": "./dist/barcode-reader.js",
+    "removeComments": true,
+    "moduleResolution": "node",
   },
-  "include": ["src"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
