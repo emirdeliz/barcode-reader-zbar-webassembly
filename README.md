@@ -1,4 +1,4 @@
-# Barcode Read - Ts and Webassemnly
+# Barcode Read - Ts and Webassembly
 
 Barcode reader written in Ts and using webassembly. In addition, it calculates the check digit as well.
 
