@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { checkIsProductionEnvironment } from 'helpers';
 import path from 'path';
 import {
   clockGetTime,
@@ -9,7 +10,9 @@ import {
 } from './CZBarEmscripten';
 import { checkIfCZBarIsRunningOnEnvironmentTestOrAsNode } from './CZBarUtils';
 
-export const CZBAR_WASM_BINARY_FILE = '../../dist/cbarcode.wasm';
+export const CZBAR_WASM_BINARY_FILE = `${
+	checkIsProductionEnvironment() ? '' : '../../dist'
+}/cbarcode.wasm`;
 let cBarcodeInstance = {} as CZBarBarcodeWasm;
 
 export interface CWasm {
@@ -73,7 +76,7 @@ const fetchCZBarWasm = async () => {
   if (checkIfCZBarIsRunningOnEnvironmentTestOrAsNode()) {
     const wasmFileLocalDir = path.resolve(
       __dirname,
-      '../../../../../../public',
+      '../../../../../../dist',
       CZBAR_WASM_BINARY_FILE
     );
     const data = fs.readFileSync(wasmFileLocalDir);

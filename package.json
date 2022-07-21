@@ -25,7 +25,9 @@
 	},
 	"scripts": {
 		"test": "jest",
-		"build": "tsc && yarn minify",
+		"update-lib": "yarn build && yarn new-version && yarn publish && npm publish",
+		"update-version": "node ./scripts/update-version.js",
+		"build": "build-webassembly && tsc && yarn minify",
 		"build-webassembly": "sh build.sh",
 		"minify": "jsmin -o dist/barcode-reader.min.js dist/barcode-reader.js"
 	}
