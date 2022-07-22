@@ -1,14 +1,21 @@
 {
-	"name": "@emirdeliz/barcode-reader-zbar-webassembly",
-	"version": "1.0.0",
+	"name": "barcode-reader-zbar-webassembly",
+	"version": "1.0.2",
 	"description": "barcode-reader-zbar-webassembly",
 	"main": "dist/barcode-reader.js",
 	"types": "dist/barcode-reader.d.ts",
+	"private": false,
+	"author": "Emir Marques - <emirdeliz@gmail.com>",
+	"maintainers": [
+		{
+			"name": "Emir Marques de Liz",
+			"email": "emirdeliz@gmail.com"
+		}
+	],
 	"files": [
 		"dist"
 	],
 	"repository": "https://github.com/emirdeliz/barcode-reader-zbar-webassembly",
-	"author": "Emir Marques - <emirdeliz@gmail.com>",
 	"license": "MIT",
 	"dependencies": {
 		"barcode-reader-zbar-c": "git+ssh://git@github.com/emirdeliz/barcode-reader-zbar-c.git",
@@ -18,8 +25,8 @@
 	},
 	"devDependencies": {
 		"@babel/preset-typescript": "^7.18.6",
-		"@types/jest": "^26.0.15",
 		"@jest/types": "^26.0.15",
+		"@types/jest": "^26.0.15",
 		"jest": "^26.4.2",
 		"ts-jest": "^26.4.2",
 		"typescript": "^4.7.4"
@@ -38,7 +45,7 @@
 		"test": "yarn jest:clear:cache && jest",
 		"jest:clear:cache": "jest --clearCache",
 		"compile:ts": "tsc",
-		"update:lib": "yarn build && yarn new:version && yarn publish && npm publish",
+		"update:lib": "yarn build && yarn update:version && yarn publish --non-interactive --access public",
 		"update:version": "node ./scripts/update-version.js",
 		"build": "yarn gen:wasm && yarn compile:ts && yarn minify",
 		"gen:wasm": "sh gen-wasm.sh",
