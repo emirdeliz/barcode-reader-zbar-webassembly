@@ -1,10 +1,4 @@
 import { scanBarcodeAndIgnorePix } from 'barcode';
-import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
-import { checkIsNodeEnvironment } from '../global/GlobalHelper';
-
-if (!checkIsNodeEnvironment()) {
-  PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.min.js`;
-}
 
 interface ReadBarCodeProps {
   file?: File;

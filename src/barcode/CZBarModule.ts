@@ -1,8 +1,10 @@
 import { createCanvas } from 'canvas';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
-import { getNumbersOfString, checkIsNodeEnvironment } from 'helpers';
+import { getNumbersOfString } from 'helpers';
+import { checkIsNodeEnvironment } from 'helpers/global/GlobalHelper';
 import { CZBarImage } from './CZBarImage';
 import { getCZBarInstance } from './CZBarWasm';
+import { PDFDocumentProxy } from 'pdfjs-dist/types/web/pdf_find_controller';
 
 if (!checkIsNodeEnvironment()) {
   PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.min.js`;
@@ -26,7 +28,7 @@ const SCALE_LIMIT = 5;
  * @param {string} src - The url or file related to pdf file.
  * @returns {Promise<PDFDocumentProxy>} - The pdf document as pdfjs proxy.
  */
-const getCZBarBarcodePdf = async (src: string | File) => {
+const getCZBarBarcodePdf = async (src: string | File): Promise<PDFDocumentProxy> => {
   const isSrcString = typeof src === 'string';
   const pdfData = await new Promise<string | Uint8Array>((resolve) => {
     if (isSrcString) {
@@ -56,7 +58,7 @@ const getCZBarImageData = async (
   pdf: PDFJS.PDFDocumentProxy,
   scale: number,
   page: number = 1
-) => {
+): Promise<ImageData> => {
   const pdfPage = await pdf.getPage(page);
   const viewport = pdfPage.getViewport({ scale });
   const width = viewport.width;
@@ -86,7 +88,7 @@ const scanBarcode = async (
   sequenceNum: number,
   scale: number,
   page: number = 0
-) => {
+): Promise<string> => {
   const imageData = await getCZBarImageData(pdf, scale, page + 1);
   if (!imageData) {
     return '';
@@ -103,7 +105,7 @@ const scanBarcode = async (
   const result = new Uint8Array(cBarInstance.memory.buffer, 0, barcodeLength);
 
   const ignorePix = 0;
-  await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
+  const p = await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
     image.getPointer(),
     result.byteOffset,
     ignorePix
@@ -138,7 +140,7 @@ export const scanBarcodeAndIgnorePix = async (
   src?: File | string,
   scale: number = 1,
   sequenceNum: number = 0
-) => {
+): Promise<string> => {
   const reachedScale = scale > SCALE_LIMIT;
   if (!src || reachedScale) {
     return '';

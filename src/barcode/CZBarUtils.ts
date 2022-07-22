@@ -1,18 +1,4 @@
-import {
-  checkIsNodeEnvironment,
-  checkIsTestEnvironment,
-} from 'helpers';
 import { getCZBarInstance } from './CZBarWasm';
-
-/**
- * This method validate the if the zbar is running on the environment test and as node.
- * It's important because exists a limitation on the test environment when running as node.
- * About the limitation: ENOENT: no such file or directory, open 'zbar.wasm'
- * @returns boolean - True if the zbar is running on the environment test and as node.
- */
-export const checkIfCZBarIsRunningOnEnvironmentTestOrAsNode = () => {
-  return checkIsTestEnvironment() || checkIsNodeEnvironment();
-};
 
 /**
  * Converts an array buffer to a string

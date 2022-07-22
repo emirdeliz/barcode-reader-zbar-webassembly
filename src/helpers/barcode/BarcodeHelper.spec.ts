@@ -7,7 +7,7 @@ import { readBarcodeFromStack } from './BarcodeHelper';
 
 jest.setTimeout(15000);
 
-describe('framework/helpers/barcode', () => {
+describe('helpers/barcode', () => {
   beforeAll(() => {
     jest.spyOn(globalThis.console, 'log').mockImplementation(() => undefined);
     jest.spyOn(globalThis.console, 'warn').mockImplementation(() => undefined);
@@ -51,18 +51,18 @@ describe('framework/helpers/barcode', () => {
   });
 
   it('Should have a InputBarcode from Detran', async () => {
-    const { barcode, path } = getBilletPathAndBarcodeNumber()[5];
-    const result = await readBarcodeFromStack({ filePath: path });
-    expect(result).toEqual(barcode);
-  });
+		const { barcode, path } = getBilletPathAndBarcodeNumber()[5];
+		const result = await readBarcodeFromStack({ filePath: path });
+		expect(result).toEqual(barcode);
+	});
 
   it('Should have a InputBarcode from Nubank', async () => {
-    const { barcode, path } = getBilletPathAndBarcodeNumber()[6];
-    const result = await readBarcodeFromStack({
-      filePath: path,
-    });
-    expect(result).toEqual(barcode);
-  });
+		const { barcode, path } = getBilletPathAndBarcodeNumber()[6];
+		const result = await readBarcodeFromStack({
+			filePath: path,
+		});
+		expect(result).toEqual(barcode);
+	});
 
   it('Should have a InputBarcode from Contabilivre with barcode on second page', async () => {
     const { barcode, path } = getBilletPathAndBarcodeNumber()[7];

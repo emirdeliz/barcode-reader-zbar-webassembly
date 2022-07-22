@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { checkIsProductionEnvironment } from 'helpers';
+import { checkIsNodeEnvironment, checkIsTestEnvironment } from 'helpers';
 import path from 'path';
 import {
   clockGetTime,
@@ -8,17 +8,24 @@ import {
   fdWrite,
   updateGlobalBufferAndViews,
 } from './CZBarEmscripten';
-import { checkIfCZBarIsRunningOnEnvironmentTestOrAsNode } from './CZBarUtils';
 
-export const CZBAR_WASM_BINARY_FILE = `${
-	checkIsProductionEnvironment() ? '' : '../../dist'
-}/cbarcode.wasm`;
+/**
+ * This method validate the if the zbar is running on the environment test and as node.
+ * It's important because exists a limitation on the test environment when running as node.
+ * About the limitation: ENOENT: no such file or directory, open 'zbar.wasm'
+ * @returns boolean - True if the zbar is running on the environment test and as node.
+ */
+export const checkIfCZBarIsRunningOnEnvironmentTestOrAsNode = () => {
+  return checkIsTestEnvironment() || checkIsNodeEnvironment();
+};
+
+export const CZBAR_WASM_BINARY_FILE = 'cbarcode.wasm';
 let cBarcodeInstance = {} as CZBarBarcodeWasm;
 
 export interface CWasm {
-  calcheckDigit: (segmentPtr: number, mod: number) => Promise<string>;
-  cGetMod: (barcode: number) => Promise<number>;
-  checkIfBarcodeIsFromInsurance: (barcode: string) => Promise<number>;
+	cGetMod: (barcode: number) => Promise<number>;
+	cCalcCheckDigit: (segmentPtr: number, mod: number) => Promise<string>;
+	cCheckIfBarcodeIsFromInsurance: (barcode: string) => Promise<number>;
 }
 
 export interface CZBarWasm {
@@ -62,7 +69,7 @@ export interface CZBarBarcodeWasm extends CZBarWasm, CWasm {
  * This method will fetch the cwasm module.
  * @returns {Promise<WebAssembly.WebAssemblyInstantiatedSource>} - The wasm module.
  */
-const fetchCZBarWasm = async () => {
+const fetchCZBarWasm = async (): Promise<WebAssembly.WebAssemblyInstantiatedSource> => {
   const asmLibraryArg = {
     f: clockGetTime,
     c: emscriptenMemcpyBig,
@@ -76,9 +83,10 @@ const fetchCZBarWasm = async () => {
   if (checkIfCZBarIsRunningOnEnvironmentTestOrAsNode()) {
     const wasmFileLocalDir = path.resolve(
       __dirname,
-      '../../../../../../dist',
+      '../../dist',
       CZBAR_WASM_BINARY_FILE
     );
+
     const data = fs.readFileSync(wasmFileLocalDir);
     return WebAssembly.instantiate(data, info);
   }
@@ -90,30 +98,31 @@ const fetchCZBarWasm = async () => {
 
 /**
  * This method make a bridge between the webassembly and the c code.
- * @returns {CZBarBarcodeWasm} - The webassembly instance.
+ * @returns {Promise<CZBarBarcodeWasm>} - The webassembly instance.
  */
-const prepareCZBarWasm = async () => {
-  const ex = await fetchCZBarWasm();
-  const asm = ex.instance.exports;
-  cBarcodeInstance = {
-    cZBarImageCreate: asm.m,
-    cZBarImageScannerScanAndMaybeApplyCheckDigit: asm.n,
-    checkIfBarcodeIsFromInsurance: asm.l,
-    cGetMod: asm.k,
-    calcheckDigit: asm.j,
-    malloc: asm.i,
-    free: asm.q,
-    memory: asm.g,
-  } as CZBarBarcodeWasm;
-  updateGlobalBufferAndViews(cBarcodeInstance.memory.buffer);
-  return cBarcodeInstance;
+const prepareCZBarWasm = async (): Promise<CZBarBarcodeWasm> => {
+	const ex = await fetchCZBarWasm();
+	const asm = ex.instance.exports;
+
+	cBarcodeInstance = {
+		cZBarImageCreate: asm.m,
+		cZBarImageScannerScanAndMaybeApplyCheckDigit: asm.n,
+		cGetMod: asm.k,
+		cCalcCheckDigit: asm.j,
+		cCheckIfBarcodeIsFromInsurance: asm.l,
+		malloc: asm.i,
+		free: asm.q,
+		memory: asm.g,
+	} as CZBarBarcodeWasm;
+	updateGlobalBufferAndViews(cBarcodeInstance.memory.buffer);
+	return cBarcodeInstance;
 };
 
 /**
  * This method will return and create the webassembly instance.
- * @returns {CZBarBarcodeWasm} - The webassembly instance.
+ * @returns {Promise<CZBarBarcodeWasm>} - The webassembly instance.
  */
-export const getCZBarInstance = async () => {
+export const getCZBarInstance = async (): Promise<CZBarBarcodeWasm> => {
   if (!cBarcodeInstance.free) {
     cBarcodeInstance = await prepareCZBarWasm();
   }
