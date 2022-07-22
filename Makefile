@@ -32,7 +32,7 @@ CZBAR_BARCODE_READER_ENTRY = node_modules/barcode-reader-zbar-c/src/c_barcode_sc
 dist/all: $(ZBAR_DEPS) $(CZBAR_WASM_DEPS)
 
 $(CZBAR_WASM_DEPS):
-	$(EMCC) $(EMCC_FLAGS) -o dist/cbarcode.js $(CZBAR_BARCODE_READER_ENTRY) $(ZBAR_INC) $(ZBAR_OBJS)
+	$(EMCC) $(EMCC_FLAGS) -o dist/cbarcode.wasm $(CZBAR_BARCODE_READER_ENTRY) $(ZBAR_INC) $(ZBAR_OBJS)
 
 $(ZBAR_DEPS): $(ZBAR_SOURCE)/Makefile
 	cd $(ZBAR_SOURCE_PATH)/$(ZBAR_SOURCE) && $(EMMAKE) make CFLAGS=-Os CXXFLAGS=-Os DEFS="-DZNO_MESSAGES -DHAVE_CONFIG_H"

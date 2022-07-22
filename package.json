@@ -1,5 +1,5 @@
 {
-	"name": "barcode-reader-zbar-webassembly",
+	"name": "@emirdeliz/barcode-reader-zbar-webassembly",
 	"version": "1.0.0",
 	"description": "barcode-reader-zbar-webassembly",
 	"main": "dist/barcode-reader.js",
@@ -37,10 +37,11 @@
 	"scripts": {
 		"test": "yarn jest:clear:cache && jest",
 		"jest:clear:cache": "jest --clearCache",
-		"update-lib": "yarn build && yarn new-version && yarn publish && npm publish",
-		"update-version": "node ./scripts/update-version.js",
-		"build": "gen-wasm && tsc && yarn minify",
-		"gen-wasm": "sh gen-wasm.sh",
+		"compile:ts": "tsc",
+		"update:lib": "yarn build && yarn new:version && yarn publish && npm publish",
+		"update:version": "node ./scripts/update-version.js",
+		"build": "yarn gen:wasm && yarn compile:ts && yarn minify",
+		"gen:wasm": "sh gen-wasm.sh",
 		"minify": "jsmin -o dist/barcode-reader.min.js dist/barcode-reader.js"
 	}
 }
