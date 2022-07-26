@@ -1,18 +1,16 @@
 {
   "compilerOptions": {
     "baseUrl": "./src",
-    "module": "amd",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "lib": ["es2021"],
     "target": "es5",
-    "outDir": "./dist",
-    "outFile": "./dist/barcode-reader.js",
     "removeComments": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "declaration": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

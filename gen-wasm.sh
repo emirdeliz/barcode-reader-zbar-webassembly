@@ -11,7 +11,7 @@ if [[ "$DOCKER_VERSION" == *"Docker version"* ]]; then
 	
 	if [ "$1" == "--compile" ]; then
 		echo "Building the webassembly code... 👀\n"
-		make dist/cbarcode.wasm
+		make dist/barcode-reader.wasm
 	elif [ $# -gt 0 ]; then
 		echo "\n⚠️ ⚠️ ⚠️  Invalid argument: $1\n"
 		exit 1;
