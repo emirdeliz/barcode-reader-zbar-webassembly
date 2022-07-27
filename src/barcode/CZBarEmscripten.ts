@@ -1,8 +1,8 @@
 /**
  * All method of this file was used internally by emscripten. Avoid to edit them.
  */
-import { checkIsNodeEnvironment } from "helpers";
-import { getCZBarInstance } from "./CZBarWasm";
+import { checkIsNodeEnvironment } from '@/helpers';
+import { getCZBarInstance } from './CZBarWasm';
 
 /**
  * This method get the clock time in milliseconds. Used internally by emscripten.

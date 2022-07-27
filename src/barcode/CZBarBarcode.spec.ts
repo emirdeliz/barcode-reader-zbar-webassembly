@@ -8,7 +8,7 @@ import {
   barcodeInsuranceWithoutDigit3,
   barcodeInsuranceWithoutDigit4,
   barcodeInsuranceWithoutDigit5,
-} from '__mock__/helpers';
+} from '@/__mock__/helpers';
 import {
   calcheckDigit,
   cGetMod,

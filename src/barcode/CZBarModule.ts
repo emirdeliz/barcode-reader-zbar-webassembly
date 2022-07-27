@@ -1,7 +1,7 @@
 import { createCanvas } from 'canvas';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
-import { getNumbersOfString } from 'helpers';
-import { checkIsNodeEnvironment } from 'helpers/global/GlobalHelper';
+import { getNumbersOfString } from '@/helpers';
+import { checkIsNodeEnvironment } from '@/helpers/global/GlobalHelper';
 import { CZBarImage } from './CZBarImage';
 import { getCZBarInstance } from './CZBarWasm';
 import { PDFDocumentProxy } from 'pdfjs-dist/types/web/pdf_find_controller';

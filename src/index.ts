@@ -1,1 +1,1 @@
-export * from 'helpers/barcode/BarcodeHelper';
+export * from '@/helpers/barcode/BarcodeHelper';

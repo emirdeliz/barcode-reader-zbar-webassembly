@@ -1,4 +1,4 @@
-import { scanBarcodeAndIgnorePix } from 'barcode';
+import { scanBarcodeAndIgnorePix } from '@/barcode';
 
 interface ReadBarCodeProps {
   file?: File;

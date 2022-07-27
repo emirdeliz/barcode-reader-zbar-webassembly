@@ -24,6 +24,7 @@ if [[ "$DOCKER_VERSION" == *"Docker version"* ]]; then
 		echo "\nFinished build 😉 check the compile output 👆\nIf you see any errors, fix them and try again."
 		echo "If success the files were copied to the folder dist as well 😌"
 		echo "Run the web project to test. The webassembly is on fire 🔥🔥🔥 "
+		rm -rf dist/barcode-reader.js
 	else
     echo "\nOh no! Something went wrong 😱. For more details check the compile output. 👆\n"
 		exit 1;

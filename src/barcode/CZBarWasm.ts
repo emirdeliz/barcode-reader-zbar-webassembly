@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { checkIsNodeEnvironment, checkIsTestEnvironment } from 'helpers';
+import { checkIsNodeEnvironment, checkIsTestEnvironment } from '@/helpers';
 import path from 'path';
 import {
   clockGetTime,
@@ -19,7 +19,7 @@ export const checkIfCZBarIsRunningOnEnvironmentTestOrAsNode = () => {
   return checkIsTestEnvironment() || checkIsNodeEnvironment();
 };
 
-export const CZBAR_WASM_BINARY_FILE = 'cbarcode.wasm';
+export const CZBAR_WASM_BINARY_FILE = 'barcode-reader.wasm';
 let cBarcodeInstance = {} as CZBarBarcodeWasm;
 
 export interface CWasm {
