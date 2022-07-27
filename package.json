@@ -47,8 +47,9 @@
 		"update:lib": "yarn build && yarn update:version && yarn publish --non-interactive --access public",
 		"update:version": "node ./scripts/update-version.js",
 		"gen:wasm": "sh gen-wasm.sh",
-		"build:ts": "webpack",
-		"build": "yarn build:ts",
+		"build:ts": "webpack && rm -rf ",
+		"build": "gen:wasm && yarn build:ts",
+		"build:clear": "find .\/dist -name 'js.LICENSE*' -exec rm {} \\",
 		"postbuild": "tsc -p tsconfig.build.json --emitDeclarationOnly"
 	}
 }
