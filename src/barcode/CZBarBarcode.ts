@@ -32,7 +32,7 @@ export const cGetMod = async (barcode: string) => {
  * @param {string} segment - The barcode segment (string with 11 digits).
  * @returns string - The check digits for the segment.
  */
- export const calcheckDigit = async (segment: string, mod: number) => {
+ export const calcCheckDigit = async (segment: string, mod: number) => {
   const wasm = await getCZBarInstance();
   const segmentPointer = await allocateUTF8(segment);
   const response = await wasm.cCalcCheckDigit(segmentPointer, mod);

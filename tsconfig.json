@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "target": "es6",
     "module": "commonjs",
     "moduleResolution": "node",
     "lib": ["es2022"],
@@ -14,11 +13,12 @@
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "emitDeclarationOnly": false,
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
     }
   },
   "include": ["src/index.ts"],
-  "exclude": ["node_modules", "dist", "sr"]
+  "exclude": ["node_modules", "dist"]
 }

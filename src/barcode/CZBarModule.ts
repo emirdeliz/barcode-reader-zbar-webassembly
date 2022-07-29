@@ -59,6 +59,10 @@ const getCZBarImageData = async (
   scale: number,
   page: number = 1
 ): Promise<ImageData> => {
+  if (page > pdf.numPages) {
+    return null;
+  }
+
   const pdfPage = await pdf.getPage(page);
   const viewport = pdfPage.getViewport({ scale });
   const width = viewport.width;
@@ -137,30 +141,30 @@ const scanBarcode = async (
  * @returns {Promise<string>} - The barcode founded as string. Usually passed as 0.
  */
 export const scanBarcodeAndIgnorePix = async (
-  src?: File | string,
-  scale: number = 1,
-  sequenceNum: number = 0
+	src?: File | string,
+	scale: number = 1,
+	sequenceNum: number = 0
 ): Promise<string> => {
-  const reachedScale = scale > SCALE_LIMIT;
-  if (!src || reachedScale) {
-    return '';
-  }
+	const reachedScale = scale > SCALE_LIMIT;
+	if (!src || reachedScale) {
+		return '';
+	}
 
-  const pdf = await getCZBarBarcodePdf(src);
-  const barcode = await scanBarcode(pdf, sequenceNum, scale);
+	const pdf = await getCZBarBarcodePdf(src);
+	const barcode = await scanBarcode(pdf, sequenceNum, scale);
 
-  if (!barcode) {
-    const response = await new Promise<string>((resolve) => {
-      setTimeout(async () => {
-        const r = (await scanBarcodeAndIgnorePix(
-          src,
-          scale + SCALE_STEP
-        )) as string;
-        resolve(r);
-      }, 500);
-    });
-    return response;
-  }
+	if (!barcode) {
+		const response = await new Promise<string>((resolve) => {
+			setTimeout(async () => {
+				const r = (await scanBarcodeAndIgnorePix(
+					src,
+					scale + SCALE_STEP
+				)) as string;
+				resolve(r);
+			}, 500);
+		});
+		return response;
+	}
 
-  return barcode;
+	return barcode;
 };

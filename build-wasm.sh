@@ -2,12 +2,10 @@ DOCKER_VERSION=$(docker -v)
 
 if [[ "$DOCKER_VERSION" == *"Docker version"* ]]; then
 	echo "👉👉👉 Cool, let's compile the cpp code to webassembly. 😎"
-	rm -rf dist && sleep 1.5s
+	rm -rf dist/barcode-reader.wasm && sleep 1.5s
 	echo "\nData from the last build has been removed 🧹"
 	echo "If you are compiling for the first time the compilation will take about ⏳ 10min otherwise ⏳ 1min"
 	echo "Enjoy and take relax 🍺 🍸 🍷...\n"
-
-	mkdir dist;
 	
 	if [ "$1" == "--compile" ]; then
 		echo "Building the webassembly code... 👀\n"
