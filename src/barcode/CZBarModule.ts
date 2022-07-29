@@ -106,29 +106,30 @@ const scanBarcode = async (
 
   const cBarInstance = await getCZBarInstance();
   const barcodeLength = 48;
+  const barcodeMinLength = 44;
   const result = new Uint8Array(cBarInstance.memory.buffer, 0, barcodeLength);
 
   const ignorePix = 0;
-  const p = await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
+  await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
     image.getPointer(),
     result.byteOffset,
     ignorePix
   );
 
   const barcode = getNumbersOfString(new TextDecoder().decode(result));
-  if (!barcode) {
-    const nextPdfPage = page + 1;
-    const reachedMaximumNumberOfScans = nextPdfPage >= PDF_NUM_MAX_PAGES;
-    if (!reachedMaximumNumberOfScans) {
-      const result = (await scanBarcode(
-        pdf,
-        sequenceNum,
-        scale,
-        nextPdfPage
-      )) as string;
-      return result;
-    }
-  }
+  if (!barcode || barcode.length < barcodeMinLength) {
+		const nextPdfPage = page + 1;
+		const reachedMaximumNumberOfScans = nextPdfPage >= PDF_NUM_MAX_PAGES;
+		if (!reachedMaximumNumberOfScans) {
+			const result = (await scanBarcode(
+				pdf,
+				sequenceNum,
+				scale,
+				nextPdfPage
+			)) as string;
+			return result;
+		}
+	}
   return barcode;
 };
 
