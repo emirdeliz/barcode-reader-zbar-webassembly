@@ -1,0 +1,17 @@
+{
+	"name": "barcode-reader-zbar-webassembly-example",
+	"version": "1.0.0",
+	"description": "Barcode reader zbar webassembly - example",
+	"type": "commonjs",
+	"moduleResolution": "node",
+	"main": "index.js",
+	"repository": "https://github.com/emirdeliz/barcode-reader-zbar-webassembly",
+	"author": "Emir Marques - <emirdeliz@gmail.com>",
+	"license": "MIT",
+	"dependencies": {
+		"express": "^4.18.2"
+	},
+	"scripts": {
+		"start": "node ./src/server/app.js --max-old-space-size=8192"
+	}
+}
