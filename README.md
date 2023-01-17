@@ -12,13 +12,13 @@ Run build.sh to build a docker and update the webassembly.
 
 <img src="https://raw.githubusercontent.com/emirdeliz/barcode-reader-zbar-webassembly/master/docs/demo.gif" width="700" height="auto" alt="Upload Largest Files - example"/>
 
-## How to use??
+## How to use?
 
 Added the static files (barcode-reader.js and barcode-reader.wasm) on the server. And then use the code below.
 
 ```javascript
 const result = BarcodeReader.readBarcodeFromStack({
-	file,
+  file,
 });
 ```
 
@@ -26,7 +26,7 @@ or
 
 ```javascript
 const result = BarcodeReader.readBarcode({
-	file,
+  file,
 });
 ```
 
