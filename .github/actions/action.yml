@@ -6,5 +6,5 @@ runs:
       with:
         node-version: lts/*
         cache: yarn
-    - run: yarn install
+    - run: ssh git@github.com -vvvv && yarn install
       shell: sh
