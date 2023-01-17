@@ -26,6 +26,7 @@
 	"dependencies": {
 		"barcode-reader-zbar-c": "git+ssh://git@github.com/emirdeliz/barcode-reader-zbar-c.git",
 		"canvas": "^2.11.0",
+		"eslint": "^8.32.0",
 		"pdfjs-dist": "^2.14.305"
 	},
 	"devDependencies": {
@@ -35,6 +36,8 @@
 		"@babel/preset-env": "^7.11.5",
 		"@babel/preset-typescript": "^7.10.4",
 		"@types/jest": "^26.0.14",
+		"@typescript-eslint/eslint-plugin": "^5.48.2",
+		"@typescript-eslint/parser": "^5.48.2",
 		"babel-plugin-module-resolver": "^4.0.0",
 		"file-loader": "^6.2.0",
 		"jest": "^26.5.2",
