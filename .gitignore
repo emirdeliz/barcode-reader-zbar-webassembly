@@ -9,3 +9,7 @@ dist
 
 ### History ###
 .history
+
+### Mac ###
+*.DS_Store
+.DS_Store
