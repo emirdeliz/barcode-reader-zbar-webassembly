@@ -7,6 +7,12 @@ const getBilletFile = (fileName: string) => {
 	return filePath;
 };
 
+export interface BarcodeTest {
+	barcode: string;
+	path: string;
+	password?: string;
+}
+
 export const getBilletPathAndBarcodeNumber = () => {
 	return [
 		{
@@ -27,7 +33,7 @@ export const getBilletPathAndBarcodeNumber = () => {
 		},
 		{
 			barcode: '836100000006460001920004003839057001000828586800',
-			path: getBilletFile('super-gasbras.pdf'),
+			path: getBilletFile('gasbras-super.pdf'),
 		},
 		{
 			barcode: '846200000012000001622026205200860000002767195783',
@@ -53,7 +59,22 @@ export const getBilletPathAndBarcodeNumber = () => {
 			barcode: '856300000029986999123100122221023256885250100002',
 			path: getBilletFile('detran.pdf'),
 		},
-	];
+		{
+			barcode: '00191899100000020000000003215837001008823817',
+			path: getBilletFile('password-cora.pdf'),
+			password: 'Test@123',
+		},
+		{
+			barcode: '856300000029986999123100122221023256885250100002',
+			path: getBilletFile('password-detran.pdf'),
+			password: '12345',
+		},
+		{
+			barcode: '23793875700000020003381260068823434000006330',
+			path: getBilletFile('password-nubank.pdf'),
+			password: '!@#$%&*()_+',
+		},
+	] as Array<BarcodeTest>;
 };
 
 export const barcodeInsurance =

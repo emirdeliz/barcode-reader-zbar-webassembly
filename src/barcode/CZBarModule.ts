@@ -1,13 +1,14 @@
 import { createCanvas } from 'canvas';
 import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.js';
+import { PDFDocumentProxy } from 'pdfjs-dist/types/web/pdf_find_controller';
 import { getNumbersOfString } from '@/helpers';
 import { checkIsNodeEnvironment } from '@/helpers/global/GlobalHelper';
 import { CZBarImage } from './CZBarImage';
 import { getCZBarInstance } from './CZBarWasm';
-import { PDFDocumentProxy } from 'pdfjs-dist/types/web/pdf_find_controller';
+import { string32 } from 'pdfjs-dist/types/src/shared/util';
 
 if (!checkIsNodeEnvironment()) {
-  PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.min.js`;
+	PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.min.js`;
 }
 /**
  * The variable PDF_NUM_MAX_PAGES defines the maximum
@@ -26,25 +27,34 @@ const SCALE_LIMIT = 5;
 /**
  * This method get the document of barcode using pdfjs.
  * @param {string} src - The url or file related to pdf file.
+ * @param {string} password - The password to open the pdf file.
  * @returns {Promise<PDFDocumentProxy>} - The pdf document as pdfjs proxy.
  */
-const getCZBarBarcodePdf = async (src: string | File): Promise<PDFDocumentProxy> => {
-  const isSrcString = typeof src === 'string';
-  const pdfData = await new Promise<string | Uint8Array>((resolve) => {
-    if (isSrcString) {
-      resolve(src as string);
-    }
+const getCZBarBarcodePdf = async (
+	src: string | File,
+	password?: string
+): Promise<PDFDocumentProxy> => {
+	const isSrcString = typeof src === 'string';
+	const pdfData = await new Promise<string | Uint8Array>((resolve) => {
+		if (isSrcString) {
+			resolve(src as string);
+		}
 
-    const fileReader = new FileReader();
-    fileReader.onload = async (e) => {
-      const typedarray = new Uint8Array(e.target?.result as ArrayBuffer);
-      resolve(typedarray);
-    };
-    fileReader.readAsArrayBuffer(src as File);
-  });
+		const fileReader = new FileReader();
+		fileReader.onload = async (e) => {
+			const typedarray = new Uint8Array(e.target?.result as ArrayBuffer);
+			resolve(typedarray);
+		};
+		fileReader.readAsArrayBuffer(src as File);
+	});
 
-  const pdf = await PDFJS.getDocument(pdfData).promise;
-  return pdf;
+	const isPdfDataString = typeof pdfData === 'string';
+	const pdfParameters = {
+		[isPdfDataString ? 'url' : 'data']: pdfData,
+		password,
+	};
+	const pdf = await PDFJS.getDocument(pdfParameters).promise;
+	return pdf;
 };
 
 /**
@@ -55,27 +65,28 @@ const getCZBarBarcodePdf = async (src: string | File): Promise<PDFDocumentProxy>
  * @returns {Promise<ImageData>} - The image data related to the page of pdf document.
  */
 const getCZBarImageData = async (
-  pdf: PDFJS.PDFDocumentProxy,
-  scale: number,
-  page: number = 1
+	pdf: PDFJS.PDFDocumentProxy,
+	scale: number,
+	page: number = 1
 ): Promise<ImageData> => {
-  if (page > pdf.numPages) {
-    return null;
-  }
+	if (page > pdf.numPages) {
+		return null;
+	}
 
-  const pdfPage = await pdf.getPage(page);
-  const viewport = pdfPage.getViewport({ scale });
-  const width = viewport.width;
-  const height = viewport.height;
+	const pdfPage = await pdf.getPage(page);
+	const viewport = pdfPage.getViewport({ scale });
+	const width = viewport.width;
+	const height = viewport.height;
 
-  const canvas = createCanvas(width, height);
-  canvas.width = width;
-  canvas.height = height;
+	const canvas = createCanvas(width, height);
+	canvas.width = width;
+	canvas.height = height;
 
-  const ctx = canvas.getContext('2d');
-  ctx &&
-    (await pdfPage.render({ canvasContext: ctx, viewport: viewport }).promise);
-  return ctx?.getImageData(0, 0, width, height);
+	const ctx = canvas.getContext('2d');
+	ctx &&
+		(await pdfPage.render({ canvasContext: ctx, viewport: viewport }).promise);
+	const imageData = ctx?.getImageData(0, 0, width, height) as ImageData;
+	return imageData;
 };
 
 /**
@@ -88,36 +99,36 @@ const getCZBarImageData = async (
  * @returns {Promise<string>} - The barcode as string.
  */
 const scanBarcode = async (
-  pdf: PDFJS.PDFDocumentProxy,
-  sequenceNum: number,
-  scale: number,
-  page: number = 0
+	pdf: PDFJS.PDFDocumentProxy,
+	sequenceNum: number,
+	scale: number,
+	page: number = 0
 ): Promise<string> => {
-  const imageData = await getCZBarImageData(pdf, scale, page + 1);
-  if (!imageData) {
-    return '';
-  }
-  const image = await CZBarImage.createFromGrayBuffer(
-    imageData.width,
-    imageData.height,
-    imageData.data.buffer,
-    sequenceNum
-  );
+	const imageData = await getCZBarImageData(pdf, scale, page + 1);
+	if (!imageData) {
+		return '';
+	}
+	const image = await CZBarImage.createFromGrayBuffer(
+		imageData.width,
+		imageData.height,
+		imageData.data.buffer,
+		sequenceNum
+	);
 
-  const cBarInstance = await getCZBarInstance();
-  const barcodeLength = 48;
-  const barcodeMinLength = 44;
-  const result = new Uint8Array(cBarInstance.memory.buffer, 0, barcodeLength);
+	const cBarInstance = await getCZBarInstance();
+	const barcodeLength = 48;
+	const barcodeMinLength = 44;
+	const result = new Uint8Array(cBarInstance.memory.buffer, 0, barcodeLength);
 
-  const ignorePix = 0;
-  await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
-    image.getPointer(),
-    result.byteOffset,
-    ignorePix
-  );
+	const ignorePix = 0;
+	await cBarInstance.cZBarImageScannerScanAndMaybeApplyCheckDigit(
+		image.getPointer(),
+		result.byteOffset,
+		ignorePix
+	);
 
-  const barcode = getNumbersOfString(new TextDecoder().decode(result));
-  if (!barcode || barcode.length < barcodeMinLength) {
+	const barcode = getNumbersOfString(new TextDecoder().decode(result));
+	if (!barcode || barcode.length < barcodeMinLength) {
 		const nextPdfPage = page + 1;
 		const reachedMaximumNumberOfScans = nextPdfPage >= PDF_NUM_MAX_PAGES;
 		if (!reachedMaximumNumberOfScans) {
@@ -130,7 +141,7 @@ const scanBarcode = async (
 			return result;
 		}
 	}
-  return barcode;
+	return barcode;
 };
 
 /**
@@ -139,19 +150,21 @@ const scanBarcode = async (
  * @param {File|string} src - The url or file related to pdf file.
  * @param {number} scale - The scale or zoom applied on the pdf document before search barcode.
  * @param {number} sequenceNum - The sequence number of the image.
+ * @param {string} password - The password to open the pdf file.
  * @returns {Promise<string>} - The barcode founded as string. Usually passed as 0.
  */
 export const scanBarcodeAndIgnorePix = async (
 	src?: File | string,
 	scale: number = 1,
-	sequenceNum: number = 0
+	sequenceNum: number = 0,
+	password?: string
 ): Promise<string> => {
 	const reachedScale = scale > SCALE_LIMIT;
 	if (!src || reachedScale) {
 		return '';
 	}
 
-	const pdf = await getCZBarBarcodePdf(src);
+	const pdf = await getCZBarBarcodePdf(src, password);
 	const barcode = await scanBarcode(pdf, sequenceNum, scale);
 
 	if (!barcode) {
@@ -159,7 +172,9 @@ export const scanBarcodeAndIgnorePix = async (
 			setTimeout(async () => {
 				const r = (await scanBarcodeAndIgnorePix(
 					src,
-					scale + SCALE_STEP
+					scale + SCALE_STEP,
+					sequenceNum,
+					password
 				)) as string;
 				resolve(r);
 			}, 500);
