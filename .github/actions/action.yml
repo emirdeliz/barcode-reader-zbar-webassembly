@@ -6,5 +6,5 @@ runs:
       with:
         node-version: lts/*
         cache: yarn
-    - run: ssh git@github.com -vvvv && yarn install
+    - run: ssh-keyscan -H git@github.com/emirdeliz/barcode-reader-zbar-c.git >> ~/.ssh/known_hosts && yarn install
       shell: sh
