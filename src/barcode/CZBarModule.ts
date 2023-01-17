@@ -5,7 +5,6 @@ import { getNumbersOfString } from '@/helpers';
 import { checkIsNodeEnvironment } from '@/helpers/global/GlobalHelper';
 import { CZBarImage } from './CZBarImage';
 import { getCZBarInstance } from './CZBarWasm';
-import { string32 } from 'pdfjs-dist/types/src/shared/util';
 
 if (!checkIsNodeEnvironment()) {
 	PDFJS.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS.version}/pdf.worker.min.js`;
@@ -67,7 +66,7 @@ const getCZBarBarcodePdf = async (
 const getCZBarImageData = async (
 	pdf: PDFJS.PDFDocumentProxy,
 	scale: number,
-	page: number = 1
+	page = 1
 ): Promise<ImageData> => {
 	if (page > pdf.numPages) {
 		return null;
@@ -102,7 +101,7 @@ const scanBarcode = async (
 	pdf: PDFJS.PDFDocumentProxy,
 	sequenceNum: number,
 	scale: number,
-	page: number = 0
+	page = 0
 ): Promise<string> => {
 	const imageData = await getCZBarImageData(pdf, scale, page + 1);
 	if (!imageData) {
@@ -155,8 +154,8 @@ const scanBarcode = async (
  */
 export const scanBarcodeAndIgnorePix = async (
 	src?: File | string,
-	scale: number = 1,
-	sequenceNum: number = 0,
+	scale = 1,
+	sequenceNum = 0,
 	password?: string
 ): Promise<string> => {
 	const reachedScale = scale > SCALE_LIMIT;

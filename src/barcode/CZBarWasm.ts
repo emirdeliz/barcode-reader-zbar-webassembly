@@ -57,7 +57,7 @@ export interface CZBarBarcodeWasm extends CZBarWasm, CWasm {
 	memory: WebAssembly.Memory;
 	print: () => void;
 	printErr: () => void;
-	arguments: Array<any>;
+	arguments: Array<string>;
 	buffer: ArrayBuffer;
 	HEAP8: Int8Array;
 	HEAP16: Int16Array;
@@ -80,8 +80,8 @@ const fetchCZBarWasm =
 			c: emscriptenMemcpyBig,
 			d: emscriptenResizeHeap,
 			a: fdWrite,
-			e: () => {},
-			b: () => {},
+			e: () => undefined,
+			b: () => undefined,
 		};
 
 		const info = { a: asmLibraryArg };

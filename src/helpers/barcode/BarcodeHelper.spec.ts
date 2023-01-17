@@ -15,7 +15,7 @@ describe('helpers/barcode', () => {
 	});
 
 	const dataTest = getBilletPathAndBarcodeNumber().map((data) => {
-		const filename = data.path.replace(/^.*[\\\/]/, '');
+		const filename = data.path.replace(/^.*[\\/]/, '');
 		return [filename, data.path, data.password, data.barcode];
 	}) as Array<Array<string>>;
 

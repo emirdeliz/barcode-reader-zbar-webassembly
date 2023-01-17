@@ -19,7 +19,7 @@ export class CZBarImage extends CZBarBase {
     width: number,
     height: number,
     dataBuf: ArrayBuffer,
-    sequenceNum: number = 0
+    sequenceNum = 0
   ) {
     const inst = await getCZBarInstance();
     const heap = inst.HEAPU8;

@@ -34,12 +34,12 @@ export const stringToUTF8Array = (
   if (!(maxBytesToWrite > 0)) {
     return 0;
   }
-  var startIdx = outIdx;
-  var endIdx = outIdx + maxBytesToWrite - 1;
-  for (var i = 0; i < str.length; ++i) {
-    var u = str.charCodeAt(i);
+  const startIdx = outIdx;
+  const endIdx = outIdx + maxBytesToWrite - 1;
+  for (let i = 0; i < str.length; ++i) {
+    let u = str.charCodeAt(i);
     if (u >= 55296 && u <= 57343) {
-      var u1 = str.charCodeAt(++i);
+      const u1 = str.charCodeAt(++i);
       u = (65536 + ((u & 1023) << 10)) | (u1 & 1023);
     }
     if (u <= 127) {

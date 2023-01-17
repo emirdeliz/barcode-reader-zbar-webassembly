@@ -1,6 +1,6 @@
 export const splitStringBySegmentLength = (
   source: string,
-  skipCharacterIndex: number = 0,
+  skipCharacterIndex = 0,
   segmentLength: number
 ) => {
   const chunks = [] as Array<string>;

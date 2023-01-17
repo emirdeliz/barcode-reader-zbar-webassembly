@@ -10,10 +10,13 @@ import { getCZBarInstance } from './CZBarWasm';
  * @param {number} tp - The timepoint.
  * @returns {Promise<number>} - Always 0;
  */
-export const clockGetTime = async (clkId: number, tp: number): Promise<number> => {
+export const clockGetTime = async (
+	clkId: number,
+	tp: number
+): Promise<number> => {
 	const { HEAP32 } = await getCZBarInstance();
-	let now;
-	let emscriptenGetNow;
+	let now: number;
+	let emscriptenGetNow: () => number;
 	if (checkIsNodeEnvironment()) {
 		emscriptenGetNow = () => {
 			const t = process['hrtime']();
@@ -52,7 +55,7 @@ export const fdWrite = async (
 	const { HEAP32 } = await getCZBarInstance();
 	let num = 0;
 	for (let i = 0; i < iovcnt; i++) {
-		var len = HEAP32[(iov + 4) >> 2];
+		const len = HEAP32[(iov + 4) >> 2];
 		iov += 8;
 		num += len;
 	}
@@ -66,12 +69,14 @@ export const fdWrite = async (
  * @returns {Promise<number>} Always 1.
  */
 const emscriptenReallocBuffer = async (size: number): Promise<number> => {
-  try {
-    const { buffer, memory } = await getCZBarInstance();
-    memory.grow((size - buffer.byteLength + 65535) >>> 16);
-    updateGlobalBufferAndViews(memory.buffer);
-    return 1;
-  } catch (e) {}
+	try {
+		const { buffer, memory } = await getCZBarInstance();
+		memory.grow((size - buffer.byteLength + 65535) >>> 16);
+		updateGlobalBufferAndViews(memory.buffer);
+		return 1;
+	} catch (e) {
+		console.error(e);
+	}
 };
 
 /**
@@ -81,10 +86,10 @@ const emscriptenReallocBuffer = async (size: number): Promise<number> => {
  * @returns {number} - The aligned value.
  */
 const alignUp = (x: number, multiple: number): number => {
-  if (x % multiple > 0) {
-    x += multiple - (x % multiple);
-  }
-  return x;
+	if (x % multiple > 0) {
+		x += multiple - (x % multiple);
+	}
+	return x;
 };
 
 /**
@@ -141,13 +146,13 @@ export const emscriptenResizeHeap = async (
  */
 export const updateGlobalBufferAndViews = async (buffer: ArrayBuffer) => {
 	const cBarcodeInstance = await getCZBarInstance();
-  cBarcodeInstance['buffer'] = buffer;
-  cBarcodeInstance['HEAP8'] = new Int8Array(buffer);
-  cBarcodeInstance['HEAP16'] = new Int16Array(buffer);
-  cBarcodeInstance['HEAP32'] = new Int32Array(buffer);
-  cBarcodeInstance['HEAPU8'] = new Uint8Array(buffer);
-  cBarcodeInstance['HEAPU16'] = new Uint16Array(buffer);
-  cBarcodeInstance['HEAPU32'] = new Uint32Array(buffer);
-  cBarcodeInstance['HEAPF32'] = new Float32Array(buffer);
-  cBarcodeInstance['HEAPF64'] = new Float64Array(buffer);
+	cBarcodeInstance['buffer'] = buffer;
+	cBarcodeInstance['HEAP8'] = new Int8Array(buffer);
+	cBarcodeInstance['HEAP16'] = new Int16Array(buffer);
+	cBarcodeInstance['HEAP32'] = new Int32Array(buffer);
+	cBarcodeInstance['HEAPU8'] = new Uint8Array(buffer);
+	cBarcodeInstance['HEAPU16'] = new Uint16Array(buffer);
+	cBarcodeInstance['HEAPU32'] = new Uint32Array(buffer);
+	cBarcodeInstance['HEAPF32'] = new Float32Array(buffer);
+	cBarcodeInstance['HEAPF64'] = new Float64Array(buffer);
 };
