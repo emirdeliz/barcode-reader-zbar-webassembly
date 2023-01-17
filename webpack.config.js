@@ -1,19 +1,17 @@
-const path = require('path');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
-	mode: 'production',
+	mode: isProduction ? 'production' : 'development',
 	context: __dirname,
 	optimization: {
-		// minimize: true,
 		splitChunks: false,
 	},
 	entry: {
 		'barcode-reader': './src/index.ts',
-		'barcode-reader.min': './src/index.ts',
 	},
 	output: {
-		filename: 'barcode-reader.js',
+		filename: '[name].js',
 		library: 'BarcodeReader',
 	},
 	resolve: {
