@@ -15,7 +15,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: shimataro/ssh-key-action@v3
+    - uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ inputs.SSH_KEY }}
         known_hosts: ${{ inputs.KNOWN_HOSTS }}
