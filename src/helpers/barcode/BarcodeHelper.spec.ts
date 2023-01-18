@@ -19,7 +19,7 @@ describe('helpers/barcode', () => {
 		return [filename, data.path, data.password, data.barcode];
 	}) as Array<Array<string>>;
 
-	test.each(dataTest)(
+	it.each(dataTest)(
 		'Should have a barcode from %s',
 		async (_filename, path, password, expected) => {
 			const result = await readBarcodeFromStack({ filePath: path, password });
@@ -41,4 +41,38 @@ describe('helpers/barcode', () => {
 			}
 		}
 	);
+
+	it('Should have called a callback to get the password', async () => {
+		const [, path, password] = dataTest.find((data) => data[2]) || [];
+		const onRequiredPasswordMock = {
+			onRequiredPassword: () => Promise.resolve(password),
+		};
+		const onRequiredPasswordSpy = jest.spyOn(
+			onRequiredPasswordMock,
+			'onRequiredPassword'
+		);
+		await readBarcodeFromStack({
+			filePath: path,
+			onRequiredPassword: onRequiredPasswordMock.onRequiredPassword,
+		});
+
+		expect(onRequiredPasswordSpy).toBeCalledTimes(1);
+	});
+
+	it("Should haven't called a callback to get the password", async () => {
+		const [, path, password] = dataTest[0];
+		const onRequiredPasswordMock = {
+			onRequiredPassword: () => Promise.resolve(password),
+		};
+		const onRequiredPasswordSpy = jest.spyOn(
+			onRequiredPasswordMock,
+			'onRequiredPassword'
+		);
+		await readBarcodeFromStack({
+			filePath: path,
+			onRequiredPassword: onRequiredPasswordMock.onRequiredPassword,
+		});
+
+		expect(onRequiredPasswordSpy).not.toBeCalled();
+	});
 });
