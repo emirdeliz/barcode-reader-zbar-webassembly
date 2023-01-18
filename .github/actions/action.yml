@@ -1,3 +1,19 @@
+name: 'Install SSH Key'
+description: 'Install SSH key in ~/.ssh'
+author: 'emirdeliz'
+branding:
+  icon: 'terminal'
+  color: 'gray-dark'
+on:
+  workflow_call:
+    secrets:
+      SSH_KEY:
+        required: true
+        description: SSH private key
+      KNOWN_HOSTS:
+        required: true
+        description: SSH know hosts
+
 runs:
   using: 'composite'
   steps:
