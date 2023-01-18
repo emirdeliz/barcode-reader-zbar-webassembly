@@ -15,6 +15,15 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - name: Test Debug
+      run: echo "${{ inputs.SSH_KEY }}"
+        echo ""
+        echo ""
+        echo ""
+        echo "${{ inputs.KNOWN_HOSTS }}"
+        echo ""
+        echo ""
+        echo ""
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
       with:
