@@ -24,7 +24,7 @@
 		"os": false
 	},
 	"dependencies": {
-		"barcode-reader-zbar-c": "git+ssh://git@github.com/emirdeliz/barcode-reader-zbar-c.git",
+		"barcode-reader-zbar-c": "git@github.com:emirdeliz/barcode-reader-zbar-c.git",
 		"canvas": "^2.11.0",
 		"eslint": "^8.32.0",
 		"pdfjs-dist": "^2.14.305"
