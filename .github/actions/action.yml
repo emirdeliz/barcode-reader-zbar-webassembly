@@ -15,11 +15,9 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: Install SSH key
-      uses: shimataro/ssh-key-action@v2
+    - uses: shimataro/ssh-key-action@v2
       with:
         key: ${{ inputs.SSH_KEY }}
-        name: id_rsa # optional
         known_hosts: ${{ inputs.KNOWN_HOSTS }}
     - uses: actions/setup-node@v3
       with:
