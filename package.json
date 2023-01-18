@@ -59,10 +59,11 @@
 		"build:wasm": "sh build-wasm.sh --compile",
 		"build:wasm:config": "sh build-wasm.sh",
 		"build:ts": "webpack && yarn build:clear",
-		"build": "rm -rf dist/* && yarn build:wasm && yarn build:ts && yarn build:post",
+		"build": "rm -rf dist/* && yarn build:wasm && yarn build:ts && yarn build:webassembly && yarn build:post",
 		"build:production": "NODE_ENV=production yarn build",
 		"build:clear": "find ./dist -name '*js.LICENSE*' -exec rm {} \\;",
 		"build:post": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+		"build:webassembly": "cp -r webassembly/barcode-reader.wasm dist",
 		"start:example": "yarn --cwd example start"
 	}
 }

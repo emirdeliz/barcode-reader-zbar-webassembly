@@ -88,7 +88,7 @@ const fetchCZBarWasm =
 		if (checkIfCZBarIsRunningOnEnvironmentTestOrAsNode()) {
 			const wasmFileLocalDir = path.resolve(
 				__dirname,
-				'../../dist',
+				'../../webassembly',
 				CZBAR_WASM_BINARY_FILE
 			);
 
