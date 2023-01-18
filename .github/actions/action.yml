@@ -4,21 +4,9 @@ branding:
   icon: 'terminal'
   color: 'gray-dark'
 
-inputs:
-  SSH_KEY:
-    description: 'SSH: Key'
-    required: true
-  KNOWN_HOSTS:
-    description: 'SSH: Known hosts'
-    required: true
-
 runs:
   using: 'composite'
   steps:
-    - uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ inputs.SSH_KEY }}
-        known_hosts: ${{ inputs.KNOWN_HOSTS }}
     - uses: actions/setup-node@v3
       with:
         node-version: lts/*
