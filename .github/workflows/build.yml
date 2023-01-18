@@ -9,4 +9,7 @@ jobs:
           persist-credentials: false
           submodules: recursive
       - uses: ./.github/actions
+        with:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
       - run: yarn build:production

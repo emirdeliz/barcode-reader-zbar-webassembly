@@ -1,18 +1,16 @@
-name: 'Install SSH Key'
-description: 'Install SSH key in ~/.ssh'
+name: 'Action common'
 author: 'emirdeliz'
 branding:
   icon: 'terminal'
   color: 'gray-dark'
-on:
-  workflow_call:
-    secrets:
-      SSH_KEY:
-        required: true
-        description: SSH private key
-      KNOWN_HOSTS:
-        required: true
-        description: SSH know hosts
+
+inputs:
+  SSH_KEY:
+    description: 'SSH: Key'
+    required: true
+  KNOWN_HOSTS:
+    description: 'SSH: Known hosts'
+    required: true
 
 runs:
   using: 'composite'
@@ -20,7 +18,7 @@ runs:
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
       with:
-        key: ${{ secrets.SSH_KEY }}
+        key: ${{ inputs.SSH_KEY }}
         name: id_rsa # optional
         known_hosts: ${{ secrets.KNOWN_HOSTS }}
         config: ${{ secrets.CONFIG }} # ssh_config; optional
