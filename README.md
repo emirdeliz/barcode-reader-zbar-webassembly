@@ -12,6 +12,8 @@ Run build.sh to build a docker and update the webassembly.
 
 <img src="https://raw.githubusercontent.com/emirdeliz/barcode-reader-zbar-webassembly/master/docs/demo.gif" width="700" height="auto" alt="Upload Largest Files - example"/>
 
+https://emirdeliz.github.io/barcode-reader-zbar-webassembly/
+
 ## How to use?
 
 Added the static files (barcode-reader.js and barcode-reader.wasm) on the server. And then use the code below.
