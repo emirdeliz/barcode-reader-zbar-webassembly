@@ -4,6 +4,9 @@ node_modules
 ### Webassembly ###
 zbar
 
+### dist ###
+dist
+
 ### History ###
 .history
 

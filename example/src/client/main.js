@@ -19,6 +19,7 @@ const readBarcodeExample = async (e) => {
 	const file = e.target.files[0];
 	try {
 		const result = await BarcodeReader.readBarcodeFromStack({
+			wasmPath: 'assets',
 			file,
 			onRequiredPassword,
 		});
