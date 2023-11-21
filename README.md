@@ -46,4 +46,4 @@ const result = BarcodeReader.readBarcode({
 | **file** (optional)        | boolean  | The file related to pdf file.                                            |
 | **scale** (optional)       | boolean  | The scale or zoom applied on the pdf document before the search barcode. |
 | **sequenceNum** (optional) | Number   | The sequence number of the image when working with multiple barcodes.    |
-| **password** (optional)    | Number   | The password to open the pdf file.                                       |
+| **password** (optional)    | String   | The password to open the pdf file.                                       |
