@@ -1,6 +1,6 @@
 {
 	"name": "barcode-reader-zbar-webassembly",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Barcode reader zbar webassembly",
 	"main": "dist/barcode-reader.js",
 	"type": "commonjs",
